@@ -355,6 +355,12 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearLogs() {
+    _logs.clear();
+    addLog('LOGS CLEARED', LogType.info);
+    notifyListeners();
+  }
+
   // History
   void _addToHistory(String ip) {
     _recentIps.remove(ip);
@@ -492,7 +498,7 @@ class AppState extends ChangeNotifier {
   }
 }
 
-enum LogType { info, success, error }
+enum LogType { info, success, warning, error }
 
 class LogEntry {
   final String message;

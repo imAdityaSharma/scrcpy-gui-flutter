@@ -26,57 +26,91 @@ class Sidebar extends StatelessWidget {
       width: isCollapsed ? 70 : 250,
       decoration: BoxDecoration(
         color: theme.glassBg,
-        border: Border(right: BorderSide(color: Color(0xFF27272A))),
+        border: Border(
+          right: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
+        ),
       ),
-      child: Column(
-        children: [
-          const SizedBox(height: 50), // Traffic lights spacing
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Use current width to decide when to show labels to prevent overflow during animation
+          final isWidening = constraints.maxWidth > 100;
 
-          _NavItem(
-            icon: Icons.dashboard,
-            label: 'Dashboard',
-            selected: currentIndex == 0,
-            onTap: () => onIndexChanged(0),
-            isCollapsed: isCollapsed,
-          ),
-          _NavItem(
-            icon: Icons.apps,
-            label: 'App Manager',
-            selected: currentIndex == 1,
-            onTap: () => onIndexChanged(1),
-            isCollapsed: isCollapsed,
-          ),
-          _NavItem(
-            icon: Icons.cast_connected,
-            label: 'Mirroring',
-            selected: currentIndex == 2,
-            onTap: () => onIndexChanged(2),
-            isCollapsed: isCollapsed,
-          ),
-          _NavItem(
-            icon: Icons.folder_open,
-            label: 'Files',
-            selected: currentIndex == 3,
-            onTap: () => onIndexChanged(3),
-            isCollapsed: isCollapsed,
-          ),
-          _NavItem(
-            icon: Icons.settings,
-            label: 'Advanced',
-            selected: currentIndex == 4,
-            onTap: () => onIndexChanged(4),
-            isCollapsed: isCollapsed,
-          ),
-          const Spacer(),
-          _NavItem(
-            icon: Icons.info_outline,
-            label: 'About',
-            selected: currentIndex == 5,
-            onTap: () => onIndexChanged(5),
-            isCollapsed: isCollapsed,
-          ),
-          const SizedBox(height: 20),
-        ],
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 50), // Traffic lights spacing
+
+              if (isWidening) _buildSectionHeader(theme, 'SESSIONS'),
+              _NavItem(
+                icon: Icons.dashboard_rounded,
+                label: 'Dashboard',
+                selected: currentIndex == 0,
+                onTap: () => onIndexChanged(0),
+                isCollapsed: !isWidening,
+              ),
+              _NavItem(
+                icon: Icons.cast_connected_rounded,
+                label: 'Mirroring',
+                selected: currentIndex == 2,
+                onTap: () => onIndexChanged(2),
+                isCollapsed: !isWidening,
+              ),
+
+              const SizedBox(height: 16),
+              if (isWidening) _buildSectionHeader(theme, 'MANAGEMENT'),
+              _NavItem(
+                icon: Icons.apps_rounded,
+                label: 'App Manager',
+                selected: currentIndex == 1,
+                onTap: () => onIndexChanged(1),
+                isCollapsed: !isWidening,
+              ),
+              _NavItem(
+                icon: Icons.folder_rounded,
+                label: 'Files',
+                selected: currentIndex == 3,
+                onTap: () => onIndexChanged(3),
+                isCollapsed: !isWidening,
+              ),
+              _NavItem(
+                icon: Icons.terminal_rounded,
+                label: 'Advanced',
+                selected: currentIndex == 4,
+                onTap: () => onIndexChanged(4),
+                isCollapsed: !isWidening,
+              ),
+
+              const Spacer(),
+              _NavItem(
+                icon: Icons.info_rounded,
+                label: 'About',
+                selected: currentIndex == 5,
+                onTap: () => onIndexChanged(5),
+                isCollapsed: !isWidening,
+              ),
+
+              if (isWidening) ...[
+                const Divider(height: 1, color: Colors.white10),
+              ],
+              if (!isWidening) const SizedBox(height: 20),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(dynamic theme, String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 8, 16, 8),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          color: theme.textMuted.withValues(alpha: 0.5),
+          letterSpacing: 1.2,
+        ),
       ),
     );
   }
@@ -102,7 +136,7 @@ class _NavItem extends StatelessWidget {
     final theme = context.watch<AppState>().theme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       child: GestureDetector(
         onTap: onTap,
         child: MouseRegion(
@@ -110,19 +144,21 @@ class _NavItem extends StatelessWidget {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding: EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: isCollapsed ? 0 : 16,
+              vertical: 8,
+              horizontal: isCollapsed ? 0 : 12,
             ),
             decoration: BoxDecoration(
-              color: selected
-                  ? theme.accentPrimary.withValues(alpha: 0.1)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: selected
-                    ? theme.accentPrimary.withValues(alpha: 0.2)
-                    : Colors.transparent,
-              ),
+              color: selected ? theme.accentPrimary : Colors.transparent,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: selected
+                  ? [
+                      BoxShadow(
+                        color: theme.accentPrimary.withValues(alpha: 0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                  : [],
             ),
             child: Row(
               mainAxisAlignment: isCollapsed
@@ -131,8 +167,8 @@ class _NavItem extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  size: 20,
-                  color: selected ? theme.accentPrimary : theme.textMuted,
+                  size: 18,
+                  color: selected ? Colors.white : theme.textMuted,
                 ),
                 if (!isCollapsed) ...[
                   const SizedBox(width: 12),
@@ -140,11 +176,12 @@ class _NavItem extends StatelessWidget {
                     child: Text(
                       label,
                       maxLines: 1,
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                        fontWeight: selected
+                            ? FontWeight.w700
+                            : FontWeight.w500,
                         color: selected ? Colors.white : theme.textMuted,
                       ),
                     ),

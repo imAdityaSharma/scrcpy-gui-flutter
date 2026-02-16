@@ -6,18 +6,41 @@ import '../theme/app_themes.dart';
 class GlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
+  final double? width;
+  final double? height;
 
-  const GlassCard({super.key, required this.child, this.padding});
+  const GlassCard({
+    super.key,
+    required this.child,
+    this.padding,
+    this.width,
+    this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<AppState>().theme;
     return Container(
+      width: width,
+      height: height,
       padding: padding ?? const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.glassBg,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.borderColor),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+          BoxShadow(
+            color: Colors.white.withValues(alpha: 0.02),
+            blurRadius: 0,
+            offset: const Offset(0, 1),
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: child,
     );
@@ -72,16 +95,23 @@ class _AccentButtonState extends State<AccentButton> {
           transform: Matrix4.translationValues(0, _hovering ? -1 : 0, 0),
           decoration: BoxDecoration(
             gradient: gradient,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(12),
             boxShadow: _hovering
                 ? [
                     BoxShadow(
-                      color: theme.accentGlow,
-                      blurRadius: 15,
-                      offset: const Offset(0, 4),
+                      color: (widget.isStop ? Colors.red : theme.accentPrimary)
+                          .withValues(alpha: 0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 6),
                     ),
                   ]
-                : [],
+                : [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
           ),
           child: Center(
             child: Text(
@@ -90,7 +120,7 @@ class _AccentButtonState extends State<AccentButton> {
                 color: Colors.white,
                 fontWeight: FontWeight.w800,
                 fontSize: widget.fontSize,
-                letterSpacing: 2,
+                letterSpacing: 1.5,
               ),
             ),
           ),
@@ -118,14 +148,14 @@ class StyledDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.watch<AppState>().theme;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: large ? 4 : 2),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: large ? 6 : 4),
       decoration: BoxDecoration(
-        color: Color(0xFF09090B),
+        color: const Color(0xFF09090B).withValues(alpha: 0.5),
         border: Border.all(
-          color: large ? Color(0xFF27272A) : Color(0xFF27272A),
-          width: large ? 2 : 1,
+          color: Colors.white.withValues(alpha: 0.05),
+          width: 1,
         ),
-        borderRadius: BorderRadius.circular(large ? 12 : 6),
+        borderRadius: BorderRadius.circular(large ? 12 : 8),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -133,13 +163,17 @@ class StyledDropdown extends StatelessWidget {
           items: items,
           onChanged: onChanged,
           isExpanded: true,
-          dropdownColor: Color(0xFF18181B),
+          dropdownColor: const Color(0xFF18181B),
           style: TextStyle(
             color: theme.textMain,
-            fontWeight: large ? FontWeight.w700 : FontWeight.w400,
-            fontSize: large ? 16 : 13,
+            fontWeight: large ? FontWeight.w600 : FontWeight.w500,
+            fontSize: large ? 15 : 13,
           ),
-          icon: Icon(Icons.expand_more, color: theme.textMuted, size: 18),
+          icon: Icon(
+            Icons.unfold_more_rounded,
+            color: theme.textMuted,
+            size: 16,
+          ),
         ),
       ),
     );

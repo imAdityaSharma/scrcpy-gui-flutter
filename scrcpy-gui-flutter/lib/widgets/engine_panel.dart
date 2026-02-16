@@ -18,13 +18,13 @@ class EnginePanel extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          // Session mode selector
+          // 1. SOURCE SELECTION
           GlassCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionLabel('Select Mirroring Source'),
-                const SizedBox(height: 8),
+                const SectionLabel('SELECT MIRRORING SOURCE'),
+                const SizedBox(height: 12),
                 StyledDropdown(
                   value: mode,
                   large: true,
@@ -47,9 +47,9 @@ class EnginePanel extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
 
-          // Engine config
+          // 2. VIDEO & ENGINE CONFIG
           GlassCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,49 +57,18 @@ class EnginePanel extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'ENGINE CONFIGURATION',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFFD4D4D8),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 3,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isPureOtg
-                            ? const Color(0xFFEF4444).withValues(alpha: 0.1)
-                            : const Color(0xFF10B981).withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        isPureOtg ? 'MIRRORING DISABLED' : 'ACTIVE',
-                        style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
-                          color: isPureOtg
-                              ? const Color(0xFFF87171)
-                              : const Color(0xFF10B981),
-                        ),
-                      ),
+                    const SectionLabel('ENGINE CONFIGURATION'),
+                    _StatusBadge(
+                      active: !isPureOtg,
+                      text: isPureOtg ? 'MIRRORING DISABLED' : 'ACTIVE',
                     ),
                   ],
                 ),
-                Divider(color: Color(0xFF27272A), height: 20),
+                const Divider(color: Colors.white10, height: 24),
 
                 // OTG toggle (mirror only)
                 if (mode == 'mirror') ...[
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF09090B).withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Color(0xFF27272A)),
-                    ),
+                  _InputGroup(
                     child: Column(
                       children: [
                         _CheckRow(
@@ -112,7 +81,7 @@ class EnginePanel extends StatelessWidget {
                           },
                         ),
                         if (appState.otgEnabled) ...[
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 12),
                           Padding(
                             padding: const EdgeInsets.only(left: 24),
                             child: _CheckRow(
@@ -130,10 +99,10 @@ class EnginePanel extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                 ],
 
-                // Video controls
+                // Video settings
                 AnimatedOpacity(
                   opacity: isPureOtg ? 0.4 : 1.0,
                   duration: const Duration(milliseconds: 200),
@@ -142,19 +111,16 @@ class EnginePanel extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Camera settings
                         if (mode == 'camera') ...[
                           _CameraSettings(),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                         ],
-
-                        // Desktop settings
                         if (mode == 'desktop') ...[
                           _DesktopSettings(),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                         ],
 
-                        // Common controls
+                        // Main constraints
                         Row(
                           children: [
                             if (mode != 'desktop')
@@ -162,8 +128,11 @@ class EnginePanel extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SectionLabel('Resolution Limit'),
-                                    const SizedBox(height: 4),
+                                    const SectionLabel(
+                                      'RESOLUTION LIMIT',
+                                      accent: true,
+                                    ),
+                                    const SizedBox(height: 8),
                                     StyledDropdown(
                                       value: appState.resolution,
                                       items: const [
@@ -196,13 +165,13 @@ class EnginePanel extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                            if (mode != 'desktop') const SizedBox(width: 12),
+                            if (mode != 'desktop') const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SectionLabel('FPS Limit'),
-                                  const SizedBox(height: 4),
+                                  const SectionLabel('FPS LIMIT', accent: true),
+                                  const SizedBox(height: 8),
                                   StyledDropdown(
                                     value: appState.fps,
                                     items: const [
@@ -233,93 +202,42 @@ class EnginePanel extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
 
-                        // Bitrate slider
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SectionLabel('Bitrate'),
-                                Text(
-                                  '${appState.bitrate} Mbps',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w700,
-                                    color: theme.textMain,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            SliderTheme(
-                              data: SliderThemeData(
-                                trackHeight: 6,
-                                activeTrackColor: theme.accentPrimary,
-                                inactiveTrackColor: Color(0xFF27272A),
-                                thumbColor: Colors.white,
-                                thumbShape: const RoundSliderThumbShape(
-                                  enabledThumbRadius: 7,
-                                ),
-                                overlayShape: const RoundSliderOverlayShape(
-                                  overlayRadius: 14,
-                                ),
-                              ),
-                              child: Slider(
-                                value: appState.bitrate.toDouble(),
-                                min: 1,
-                                max: 24,
-                                divisions: 23,
-                                onChanged: (v) {
-                                  appState.bitrate = v.round();
-                                  appState.saveSettings();
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
+                        // Bitrate
+                        _BitrateSlider(appState: appState, theme: theme),
+                        const SizedBox(height: 16),
 
                         // Orientation
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SectionLabel('Orientation'),
-                            const SizedBox(height: 4),
-                            StyledDropdown(
-                              value: mode == 'camera'
-                                  ? appState.cameraRotation
-                                  : appState.rotation,
-                              items: const [
-                                DropdownMenuItem(
-                                  value: '0',
-                                  child: Text('Default'),
-                                ),
-                                DropdownMenuItem(
-                                  value: '90',
-                                  child: Text('90° CCW'),
-                                ),
-                                DropdownMenuItem(
-                                  value: '180',
-                                  child: Text('180°'),
-                                ),
-                                DropdownMenuItem(
-                                  value: '270',
-                                  child: Text('90° CW'),
-                                ),
-                              ],
-                              onChanged: (v) {
-                                if (mode == 'camera') {
-                                  appState.cameraRotation = v!;
-                                } else {
-                                  appState.rotation = v!;
-                                }
-                                appState.saveSettings();
-                              },
+                        const SectionLabel('ORIENTATION', accent: true),
+                        const SizedBox(height: 8),
+                        StyledDropdown(
+                          value: mode == 'camera'
+                              ? appState.cameraRotation
+                              : appState.rotation,
+                          items: const [
+                            DropdownMenuItem(
+                              value: '0',
+                              child: Text('Default'),
+                            ),
+                            DropdownMenuItem(
+                              value: '90',
+                              child: Text('90° CCW'),
+                            ),
+                            DropdownMenuItem(value: '180', child: Text('180°')),
+                            DropdownMenuItem(
+                              value: '270',
+                              child: Text('90° CW'),
                             ),
                           ],
+                          onChanged: (v) {
+                            if (mode == 'camera') {
+                              appState.cameraRotation = v!;
+                            } else {
+                              appState.rotation = v!;
+                            }
+                            appState.saveSettings();
+                          },
                         ),
                       ],
                     ),
@@ -328,23 +246,23 @@ class EnginePanel extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
 
-          // Launch button
+          // 3. LAUNCH ACTION
           AccentButton(
             label: _getLaunchLabel(appState),
             isStop:
                 appState.selectedDevice != null &&
                 appState.isSessionActive(appState.selectedDevice!),
             fullWidth: true,
-            verticalPadding: 20,
+            verticalPadding: 24,
             fontSize: 16,
             onPressed: () => appState.launchSession(),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
 
-          // Log output
-          _LogOutput(),
+          // 4. TERMINAL LOGS
+          const _LogTerminal(),
         ],
       ),
     );
@@ -872,112 +790,207 @@ class _SmallBtn extends StatelessWidget {
   }
 }
 
-class _LogOutput extends StatelessWidget {
+class _StatusBadge extends StatelessWidget {
+  final bool active;
+  final String text;
+
+  const _StatusBadge({required this.active, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: (active ? const Color(0xFF10B981) : const Color(0xFFEF4444))
+            .withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: (active ? const Color(0xFF10B981) : const Color(0xFFEF4444))
+              .withValues(alpha: 0.2),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 9,
+          fontWeight: FontWeight.w800,
+          color: active ? const Color(0xFF10B981) : const Color(0xFFF87171),
+          letterSpacing: 0.5,
+        ),
+      ),
+    );
+  }
+}
+
+class _InputGroup extends StatelessWidget {
+  final Widget child;
+
+  const _InputGroup({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF09090B).withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
+      ),
+      child: child,
+    );
+  }
+}
+
+class _BitrateSlider extends StatelessWidget {
+  final AppState appState;
+  final dynamic theme;
+
+  const _BitrateSlider({required this.appState, required this.theme});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SectionLabel('BITRATE', accent: true),
+            Text(
+              '${appState.bitrate} Mbps',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: theme.textMain,
+                fontFamily: 'monospace',
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        SliderTheme(
+          data: SliderThemeData(
+            trackHeight: 4,
+            activeTrackColor: theme.accentPrimary,
+            inactiveTrackColor: Colors.white.withValues(alpha: 0.05),
+            thumbColor: Colors.white,
+            thumbShape: const RoundSliderThumbShape(
+              enabledThumbRadius: 6,
+              elevation: 4,
+            ),
+            overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
+            trackShape: const RoundedRectSliderTrackShape(),
+          ),
+          child: Slider(
+            value: appState.bitrate.toDouble(),
+            min: 1,
+            max: 64,
+            divisions: 63,
+            onChanged: (v) {
+              appState.bitrate = v.round();
+              appState.saveSettings();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _LogTerminal extends StatelessWidget {
+  const _LogTerminal();
+
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
-    final theme = appState.theme;
-
     return GlassCard(
+      padding: EdgeInsets.zero,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'LOG OUTPUT',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w900,
-                  color: theme.textMuted,
-                  letterSpacing: 0.5,
+          // Terminal Header
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: const BoxDecoration(
+              color: Colors.black26,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.terminal_rounded,
+                  size: 14,
+                  color: Colors.white38,
                 ),
-              ),
-              Row(
-                children: [
-                  _LogActionBtn(
-                    icon: Icons.copy_rounded,
-                    label: 'COPY',
-                    onTap: () {
-                      final text = appState.logs
-                          .map((l) {
-                            final t =
-                                '${l.time.hour.toString().padLeft(2, '0')}:${l.time.minute.toString().padLeft(2, '0')}:${l.time.second.toString().padLeft(2, '0')}';
-                            return '[$t] ${l.message}';
-                          })
-                          .join('\n');
-                      Clipboard.setData(ClipboardData(text: text));
-                      appState.addLog(
-                        'Logs copied to clipboard',
-                        LogType.success,
-                      );
-                    },
+                const SizedBox(width: 8),
+                Text(
+                  'LOG OUTPUT',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white.withValues(alpha: 0.4),
+                    letterSpacing: 1,
                   ),
-                  const SizedBox(width: 6),
-                  _LogActionBtn(
-                    icon: Icons.delete_outline,
-                    label: 'CLEAR',
-                    onTap: () {
-                      appState.logs.clear();
-                      appState.addLog('Logs cleared', LogType.info);
-                    },
-                  ),
-                ],
-              ),
-            ],
+                ),
+                const Spacer(),
+                _TerminalAction(
+                  icon: Icons.content_copy_rounded,
+                  onTap: () {
+                    final logs = appState.logs.map((l) => l.message).join('\n');
+                    Clipboard.setData(ClipboardData(text: logs));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Logs copied to clipboard'),
+                        behavior: SnackBarBehavior.floating,
+                        width: 280,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(width: 8),
+                _TerminalAction(
+                  icon: Icons.delete_outline_rounded,
+                  onTap: () => appState.clearLogs(),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 120,
+          // Terminal Content
+          Container(
+            height: 200,
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              color: Colors.black45,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+            ),
             child: ListView.builder(
+              reverse: true,
               itemCount: appState.logs.length,
-              reverse: false,
               itemBuilder: (context, index) {
-                final log = appState.logs[index];
-                Color color;
-                Widget? prefix;
-
-                switch (log.type) {
-                  case LogType.error:
-                    color = const Color(0xFFF87171);
-                    prefix = Container(
-                      width: 2,
-                      height: 14,
-                      color: const Color(0xFFEF4444),
-                      margin: const EdgeInsets.only(right: 6),
-                    );
-                    break;
-                  case LogType.success:
-                    color = theme.accentPrimary;
-                    prefix = Container(
-                      width: 2,
-                      height: 14,
-                      color: theme.textMain,
-                      margin: const EdgeInsets.only(right: 6),
-                    );
-                    break;
-                  default:
-                    color = const Color(0xFFD4D4D8);
-                    prefix = null;
-                }
-
-                final time =
+                final log = appState.logs.reversed.toList()[index];
+                final timeStr =
                     '${log.time.hour.toString().padLeft(2, '0')}:${log.time.minute.toString().padLeft(2, '0')}:${log.time.second.toString().padLeft(2, '0')}';
-
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 2),
+                  padding: const EdgeInsets.only(bottom: 4),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (prefix != null) prefix,
+                      Text(
+                        '[$timeStr] ',
+                        style: const TextStyle(
+                          color: Colors.white24,
+                          fontSize: 11,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
                       Expanded(
                         child: Text(
-                          '[$time] ${log.message}',
+                          log.message,
                           style: TextStyle(
-                            fontFamily: 'monospace',
+                            color: _getLogColor(log.type),
                             fontSize: 11,
-                            color: color,
+                            fontFamily: 'monospace',
+                            height: 1.4,
                           ),
                         ),
                       ),
@@ -991,68 +1004,40 @@ class _LogOutput extends StatelessWidget {
       ),
     );
   }
+
+  Color _getLogColor(LogType type) {
+    switch (type) {
+      case LogType.error:
+        return const Color(0xFFF87171);
+      case LogType.success:
+        return const Color(0xFF10B981);
+      case LogType.warning:
+        return const Color(0xFFFBBF24);
+      default:
+        return Colors.white70;
+    }
+  }
 }
 
-class _LogActionBtn extends StatefulWidget {
+class _TerminalAction extends StatelessWidget {
   final IconData icon;
-  final String label;
   final VoidCallback onTap;
 
-  const _LogActionBtn({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  State<_LogActionBtn> createState() => _LogActionBtnState();
-}
-
-class _LogActionBtnState extends State<_LogActionBtn> {
-  bool _hovering = false;
+  const _TerminalAction({required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<AppState>().theme;
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovering = true),
-      onExit: (_) => setState(() => _hovering = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    return GestureDetector(
+      onTap: onTap,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: _hovering
-                ? theme.accentPrimary.withValues(alpha: 0.15)
-                : Colors.white.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-              color: _hovering
-                  ? theme.accentPrimary.withValues(alpha: 0.3)
-                  : Colors.white.withValues(alpha: 0.1),
-            ),
+            color: Colors.white.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(4),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                widget.icon,
-                size: 12,
-                color: _hovering ? theme.accentPrimary : theme.textMuted,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                widget.label,
-                style: TextStyle(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w700,
-                  color: _hovering ? theme.accentPrimary : theme.textMuted,
-                ),
-              ),
-            ],
-          ),
+          child: Icon(icon, size: 14, color: Colors.white60),
         ),
       ),
     );
