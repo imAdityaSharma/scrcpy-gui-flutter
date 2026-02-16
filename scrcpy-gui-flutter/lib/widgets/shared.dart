@@ -65,13 +65,22 @@ class _AccentButtonState extends State<AccentButton> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           width: widget.fullWidth ? double.infinity : null,
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: widget.verticalPadding),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: widget.verticalPadding,
+          ),
           transform: Matrix4.translationValues(0, _hovering ? -1 : 0, 0),
           decoration: BoxDecoration(
             gradient: gradient,
             borderRadius: BorderRadius.circular(14),
             boxShadow: _hovering
-                ? [BoxShadow(color: theme.accentGlow, blurRadius: 15, offset: const Offset(0, 4))]
+                ? [
+                    BoxShadow(
+                      color: theme.accentGlow,
+                      blurRadius: 15,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
                 : [],
           ),
           child: Center(
@@ -112,7 +121,10 @@ class StyledDropdown extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: large ? 4 : 2),
       decoration: BoxDecoration(
         color: Color(0xFF09090B),
-        border: Border.all(color: large ? Color(0xFF27272A) : Color(0xFF27272A), width: large ? 2 : 1),
+        border: Border.all(
+          color: large ? Color(0xFF27272A) : Color(0xFF27272A),
+          width: large ? 2 : 1,
+        ),
         borderRadius: BorderRadius.circular(large ? 12 : 6),
       ),
       child: DropdownButtonHideUnderline(
@@ -140,6 +152,7 @@ class StyledTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final TextInputType? keyboardType;
   final double? width;
+  final TextEditingController? controller;
 
   const StyledTextField({
     super.key,
@@ -148,6 +161,7 @@ class StyledTextField extends StatelessWidget {
     this.onChanged,
     this.keyboardType,
     this.width,
+    this.controller,
   });
 
   @override
@@ -156,7 +170,14 @@ class StyledTextField extends StatelessWidget {
     return SizedBox(
       width: width,
       child: TextField(
-        controller: value != null ? (TextEditingController(text: value)..selection = TextSelection.fromPosition(TextPosition(offset: value!.length))) : null,
+        controller:
+            controller ??
+            (value != null
+                ? (TextEditingController(text: value)
+                    ..selection = TextSelection.fromPosition(
+                      TextPosition(offset: value!.length),
+                    ))
+                : null),
         onChanged: onChanged,
         keyboardType: keyboardType,
         style: TextStyle(color: theme.textMain, fontSize: 13),
@@ -165,7 +186,10 @@ class StyledTextField extends StatelessWidget {
           hintStyle: TextStyle(color: theme.textMuted),
           filled: true,
           fillColor: theme.inputBg,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 8,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(color: Color(0xFF27272A)),

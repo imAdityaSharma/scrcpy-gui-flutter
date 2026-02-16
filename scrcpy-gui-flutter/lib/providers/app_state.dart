@@ -324,10 +324,10 @@ class AppState extends ChangeNotifier {
   }
 
   // File operations
-  Future<void> handleFile(String filePath) async {
+  Future<Map<String, dynamic>> handleFile(String filePath) async {
     if (_selectedDevice == null) {
       addLog('Select a device first!', LogType.error);
-      return;
+      return {'success': false, 'message': 'Select a device first!'};
     }
     final fileName = filePath.split(Platform.pathSeparator).last;
     if (fileName.toLowerCase().endsWith('.apk')) {
@@ -337,6 +337,7 @@ class AppState extends ChangeNotifier {
         res['message'] ?? '',
         res['success'] == true ? LogType.success : LogType.error,
       );
+      return res;
     } else {
       addLog('Pushing $fileName to Download folder...');
       final res = await adbService.pushFile(_selectedDevice!, filePath);
@@ -344,6 +345,7 @@ class AppState extends ChangeNotifier {
         res['message'] ?? '',
         res['success'] == true ? LogType.success : LogType.error,
       );
+      return res;
     }
   }
 
