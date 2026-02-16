@@ -22,7 +22,7 @@ class SessionPanel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SectionLabel('SESSION BEHAVIOR'),
-                const Divider(color: Colors.white10, height: 24),
+                const Divider(color: Colors.white10, height: 16),
 
                 // System
                 _SubHeader(text: 'SYSTEM'),
@@ -42,7 +42,7 @@ class SessionPanel extends StatelessWidget {
                     appState.saveSettings();
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
 
                 // Display
                 _SubHeader(text: 'DISPLAY & AUDIO'),
@@ -91,7 +91,7 @@ class SessionPanel extends StatelessWidget {
                   },
                   isRed: true,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 _RecordPathPanel(appState: appState, theme: theme),
               ],
             ),
@@ -117,7 +117,7 @@ class SessionPanel extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Divider(color: Colors.white10, height: 24),
+                const Divider(color: Colors.white10, height: 16),
                 _ShortcutsGrid(),
               ],
             ),
@@ -135,7 +135,7 @@ class _SubHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 6),
       child: Text(
         text,
         style: const TextStyle(
@@ -158,7 +158,7 @@ class _RecordPathPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.black26,
         borderRadius: BorderRadius.circular(8),
@@ -248,12 +248,12 @@ class _BehaviorCheck extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.watch<AppState>().theme;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 4),
       child: Row(
         children: [
           SizedBox(
-            height: 20,
-            width: 20,
+            height: 18,
+            width: 18,
             child: Checkbox(
               value: value,
               onChanged: (v) => onChanged(v ?? false),
@@ -273,7 +273,7 @@ class _BehaviorCheck extends StatelessWidget {
               child: Text(
                 label,
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 12,
                   color: isRed ? const Color(0xFFF87171) : theme.textMain,
                   fontWeight: isRed ? FontWeight.w600 : FontWeight.w400,
                 ),
@@ -301,8 +301,8 @@ class _ShortcutsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 12,
-      runSpacing: 12,
+      spacing: 8,
+      runSpacing: 8,
       children: _shortcuts
           .map((s) => _KeyCap(label: s.$1, shortcut: s.$2))
           .toList(),
@@ -319,11 +319,11 @@ class _KeyCap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 135,
-      padding: const EdgeInsets.all(10),
+      width: 125,
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: const Color(0xFF09090B).withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(

@@ -211,6 +211,11 @@ class ScrcpyService {
       args.addAll(['-s', deviceId]);
     }
 
+    final windowTitle = config['windowTitle'] as String?;
+    if (windowTitle != null && windowTitle.isNotEmpty) {
+      args.addAll(['--window-title', windowTitle]);
+    }
+
     final sessionMode = config['sessionMode'] as String? ?? 'mirror';
 
     final otgEnabled = config['otgEnabled'] as bool? ?? false;
@@ -232,11 +237,10 @@ class ScrcpyService {
       args.addAll(['-b', '${bitrate}M']);
 
       if (config['audioEnabled'] == false) args.add('--no-audio');
-      if (sessionMode != 'camera') {
-        if (config['alwaysOnTop'] == true) args.add('--always-on-top');
-        if (config['fullscreen'] == true) args.add('--fullscreen');
-        if (config['borderless'] == true) args.add('--window-borderless');
-      }
+
+      if (config['alwaysOnTop'] == true) args.add('--always-on-top');
+      if (config['fullscreen'] == true) args.add('--fullscreen');
+      if (config['borderless'] == true) args.add('--window-borderless');
 
       final rotation = config['rotation']?.toString() ?? '0';
       if (rotation != '0') args.addAll(['--orientation', rotation]);

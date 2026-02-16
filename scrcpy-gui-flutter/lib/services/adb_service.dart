@@ -580,6 +580,22 @@ end tell
     }
   }
 
+  Future<bool> deleteFile(String deviceId, String path) async {
+    try {
+      final result = await Process.run(_getAdbPath(), [
+        '-s',
+        deviceId,
+        'shell',
+        'rm',
+        '-rf',
+        path,
+      ]);
+      return result.exitCode == 0;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<String> _runAdbCommand(String deviceId, String command) async {
     try {
       final args = ['-s', deviceId, ...command.split(' ')];

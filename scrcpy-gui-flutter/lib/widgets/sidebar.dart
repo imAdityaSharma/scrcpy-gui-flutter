@@ -55,6 +55,13 @@ class Sidebar extends StatelessWidget {
                 onTap: () => onIndexChanged(2),
                 isCollapsed: !isWidening,
               ),
+              _NavItem(
+                icon: Icons.videocam_rounded,
+                label: 'Virtual Webcam',
+                selected: currentIndex == 3,
+                onTap: () => onIndexChanged(3),
+                isCollapsed: !isWidening,
+              ),
 
               const SizedBox(height: 16),
               if (isWidening) _buildSectionHeader(theme, 'MANAGEMENT'),
@@ -68,15 +75,15 @@ class Sidebar extends StatelessWidget {
               _NavItem(
                 icon: Icons.folder_rounded,
                 label: 'Files',
-                selected: currentIndex == 3,
-                onTap: () => onIndexChanged(3),
+                selected: currentIndex == 4,
+                onTap: () => onIndexChanged(4),
                 isCollapsed: !isWidening,
               ),
               _NavItem(
                 icon: Icons.terminal_rounded,
                 label: 'Advanced',
-                selected: currentIndex == 4,
-                onTap: () => onIndexChanged(4),
+                selected: currentIndex == 5,
+                onTap: () => onIndexChanged(5),
                 isCollapsed: !isWidening,
               ),
 
@@ -84,8 +91,8 @@ class Sidebar extends StatelessWidget {
               _NavItem(
                 icon: Icons.info_rounded,
                 label: 'About',
-                selected: currentIndex == 5,
-                onTap: () => onIndexChanged(5),
+                selected: currentIndex == 6,
+                onTap: () => onIndexChanged(6),
                 isCollapsed: !isWidening,
               ),
 

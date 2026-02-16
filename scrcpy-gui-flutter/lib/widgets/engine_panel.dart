@@ -99,7 +99,7 @@ class EnginePanel extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                 ],
 
                 // Video settings
@@ -255,11 +255,11 @@ class EnginePanel extends StatelessWidget {
                 appState.selectedDevice != null &&
                 appState.isSessionActive(appState.selectedDevice!),
             fullWidth: true,
-            verticalPadding: 24,
-            fontSize: 16,
+            verticalPadding: 16,
+            fontSize: 14,
             onPressed: () => appState.launchSession(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
           // 4. TERMINAL LOGS
           const _LogTerminal(),
@@ -321,7 +321,7 @@ class _CheckRow extends StatelessWidget {
               child: Text(
                 label.toUpperCase(),
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                   letterSpacing: -0.3,
@@ -604,7 +604,7 @@ class _CameraSettings extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               _SmallBtn(
-                label: 'List Cameras',
+                label: 'Cameras',
                 onTap: () async {
                   final dev = appState.selectedDevice;
                   if (dev == null)
@@ -625,7 +625,7 @@ class _CameraSettings extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               _SmallBtn(
-                label: 'List Sizes',
+                label: 'Sizes',
                 onTap: () async {
                   final dev = appState.selectedDevice;
                   if (dev == null)
@@ -830,10 +830,10 @@ class _InputGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: const Color(0xFF09090B).withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
       ),
       child: child,
@@ -867,7 +867,7 @@ class _BitrateSlider extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         SliderTheme(
           data: SliderThemeData(
             trackHeight: 4,
@@ -956,9 +956,9 @@ class _LogTerminal extends StatelessWidget {
           ),
           // Terminal Content
           Container(
-            height: 200,
+            height: 160,
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
               color: Colors.black45,
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
@@ -971,7 +971,7 @@ class _LogTerminal extends StatelessWidget {
                 final timeStr =
                     '${log.time.hour.toString().padLeft(2, '0')}:${log.time.minute.toString().padLeft(2, '0')}:${log.time.second.toString().padLeft(2, '0')}';
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
+                  padding: const EdgeInsets.only(bottom: 2),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -979,7 +979,7 @@ class _LogTerminal extends StatelessWidget {
                         '[$timeStr] ',
                         style: const TextStyle(
                           color: Colors.white24,
-                          fontSize: 11,
+                          fontSize: 10,
                           fontFamily: 'monospace',
                         ),
                       ),
@@ -988,9 +988,9 @@ class _LogTerminal extends StatelessWidget {
                           log.message,
                           style: TextStyle(
                             color: _getLogColor(log.type),
-                            fontSize: 11,
+                            fontSize: 10,
                             fontFamily: 'monospace',
-                            height: 1.4,
+                            height: 1.3,
                           ),
                         ),
                       ),

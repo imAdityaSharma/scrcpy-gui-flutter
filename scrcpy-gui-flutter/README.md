@@ -1,61 +1,40 @@
-# Scrcpy GUI (Flutter Port)
+# Scrcpy GUI (Flutter)
 
-A modern, cross-platform graphical user interface for [scrcpy](https://github.com/Genymobile/scrcpy), built with Flutter.
+A modern, cross-platform graphical user interface for [scrcpy](https://github.com/Genymobile/scrcpy), enabling seamless Android control.
 
-![Screenshot](screenshot.png)
+### Dashboard
+![Dashboard](assets/dashboard.png)
+Centralized hub for managing devices, connections, and system status in real-time.
 
-## Features
+### Screen Mirroring
+![Screen Mirror](assets/screen_mirror.png)
+High-performance, low-latency screen mirroring with keyboard and mouse control.
 
-- **Device Management**: Automatic USB detection, wireless pairing (Android 11+), and connection history.
-- **Session Modes**:
-  - **Screen Mirror**: Low-latency control with mouse and keyboard.
-  - **Camera Mirror**: Use your phone as a high-quality webcam.
-    - *New:* Per-camera rotation and FPS settings.
-  - **Desktop Mode**: Experience a desktop-like environment (if supported).
-- **Advanced Controls**:
-  - Adjust Bitrate, Resolution, and FPS on the fly.
-  - Support for H.264, H.265 (HEVC), and AV1 codecs.
-  - Screen recording with custom path selection.
-- **Smart Features**:
-  - Drag & Drop APK installation.
-  - Theming engine with 5 distinct styles.
-  - Keyboard shortcuts for common actions.
-  - Real-time log output for debugging.
+### Camera Mirroring
+![Camera Mirror](assets/camera_mirror.png)
+Professional-grade camera mirroring with granular control over FPS, rotation, and resolution.
+
+### Virtual Webcam (macOS Native) - *Coming Soon*
+![Virtual Webcam](assets/virtual_cam.png)
+Turn your phone into a system-wide native webcam without needing third-party drivers (currently in development).
+
+### File Explorer
+![File Explorer](assets/file_explorer.png)
+Drag-and-drop file management for effortless transfer between your computer and Android device.
+
+### App Management
+![App Management](assets/app_management.png)
+Install, uninstall, and manage Android applications with a single click.
+
+### Desktop Mode
+![Desktop Mode](assets/desktop_mode.png)
+Experience a full desktop-like environment for supported Samsung DeX and similar devices.
+
+### Advanced Options
+![Advanced Options](assets/advance_option.png)
+Fine-tune bitrate, codecs (H.264/H.265/AV1), and recording settings for power users.
 
 ## Getting Started
 
-### Prerequisites
-
-You must have `adb` and `scrcpy` installed and available in your system PATH.
-
-- **macOS**: `brew install scrcpy android-platform-tools`
-- **Windows**: Download `scrcpy` release and add to PATH.
-- **Linux**: `apt install scrcpy adb`
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/scrcpy-gui-flutter.git
-   cd scrcpy-gui-flutter
-   ```
-
-2. Install Flutter dependencies:
-   ```bash
-   flutter pub get
-   ```
-
-3. Run the application:
-   ```bash
-   flutter run -d macos  # or windows/linux
-   ```
-
-## Credits
-
-This project is a Flutter port based on the original **Scrcpy GUI** by **[kil0bit-kb](https://github.com/kil0bit-kb/scrcpy-gui)**.
-
-Original Project: https://github.com/kil0bit-kb/scrcpy-gui
-
-## License
-
-MIT License. See [LICENSE](LICENSE) for details.
+1.  **Prerequisites**: Ensure `adb` and `scrcpy` are installed and in your system PATH (`brew install scrcpy android-platform-tools` on macOS).
+2.  **Installation**: Clone the repo, run `flutter pub get`, and launch with `flutter run -d macos`.

@@ -9,6 +9,7 @@ import '../views/file_manager_view.dart';
 import '../views/advanced_view.dart';
 
 import '../views/app_management_view.dart';
+import '../views/webcam_view.dart';
 import '../views/about_view.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DashboardView(),
     AppManagementView(),
     MirroringView(),
+    WebcamView(),
     FileManagerView(),
     AdvancedView(),
     AboutView(),
