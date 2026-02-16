@@ -42,6 +42,14 @@ Fine-tune bitrate, codecs (H.264/H.265/AV1), and recording settings for power us
 
 
 
+### ⚠️ Important Note (macOS)
+This initial release is **unsigned**. You may not be able to open it by double-clicking.
+To launch the app, run this command in your terminal from the folder where you unzipped it:
+
+```bash
+./scrcpy_gui.app/Contents/MacOS/scrcpy_gui
+```
+
 ## Credits
 
 This project is powered by [scrcpy](https://github.com/Genymobile/scrcpy), originally developed by [kil0bit-kb](https://github.com/kil0bit-kb/scrcpy-gui) for windows.
