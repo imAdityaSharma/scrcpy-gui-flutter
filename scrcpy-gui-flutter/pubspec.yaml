@@ -1,0 +1,40 @@
+name: scrcpy_gui
+description: "A modern GUI for scrcpy - Mirror & Control Android Devices"
+publish_to: 'none'
+version: 3.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.1
+  window_manager: ^0.4.3
+  file_picker: ^8.1.7
+  path_provider: ^2.1.5
+  shared_preferences: ^2.3.5
+  provider: ^6.1.2
+  url_launcher: ^6.3.1
+  multicast_dns: ^0.3.3
+  desktop_drop: ^0.7.0
+  filesize: ^2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+flutter_launcher_icons:
+  android: false
+  ios: false
+  macos:
+    generate: true
+    image_path: "assets/icon.png"
+  windows:
+    generate: true
+    image_path: "assets/icon.png"
