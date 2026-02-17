@@ -144,9 +144,41 @@ class ScrcpyService {
     return 'scrcpy';
   }
 
+  String _getAdbPath() {
+    if (_customPath != null && _customPath!.isNotEmpty) {
+      final ext = Platform.isWindows ? '.exe' : '';
+      final fullPath = '$_customPath${Platform.pathSeparator}adb$ext';
+      if (File(fullPath).existsSync()) return fullPath;
+    }
+
+    if (Platform.isMacOS || Platform.isLinux) {
+      const commonPaths = [
+        '/opt/homebrew/bin/adb',
+        '/usr/local/bin/adb',
+        '/usr/bin/adb',
+      ];
+      for (final path in commonPaths) {
+        if (File(path).existsSync()) return path;
+      }
+    }
+    return 'adb';
+  }
+
+  Map<String, String> _getEnv() {
+    final env = Map<String, String>.from(Platform.environment);
+    env['ADB'] = _getAdbPath();
+    if (Platform.isMacOS) {
+      env['PATH'] =
+          '/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env['PATH'] ?? ''}';
+    }
+    return env;
+  }
+
   Future<Map<String, dynamic>> checkScrcpy() async {
     try {
-      final result = await Process.run(_getScrcpyPath(), ['--version']);
+      final result = await Process.run(_getScrcpyPath(), [
+        '--version',
+      ], environment: _getEnv());
       if (result.exitCode == 0) {
         return {'found': true, 'message': 'Scrcpy Ready'};
       }
@@ -160,7 +192,7 @@ class ScrcpyService {
         '-s',
         deviceId,
         '--list-cameras',
-      ]);
+      ], environment: _getEnv());
       return {'success': true, 'output': '${result.stdout}${result.stderr}'};
     } catch (e) {
       return {'success': false, 'message': e.toString()};
@@ -178,7 +210,7 @@ class ScrcpyService {
         '--video-source=camera',
         '--camera-facing=$facing',
         '--list-camera-sizes',
-      ]);
+      ], environment: _getEnv());
       final output = '${result.stdout}${result.stderr}';
       return CameraCapabilities.parse(output);
     } catch (e) {
@@ -197,7 +229,7 @@ class ScrcpyService {
         '--video-source=camera',
         '--camera-facing=$facing',
         '--list-camera-sizes',
-      ]);
+      ], environment: _getEnv());
       return {'success': true, 'output': '${result.stdout}${result.stderr}'};
     } catch (e) {
       return {'success': false, 'message': e.toString()};
@@ -325,7 +357,11 @@ class ScrcpyService {
       final cmd = '${_getScrcpyPath()} ${args.join(' ')}';
       onLog?.call('Starting scrcpy: $cmd');
 
-      final proc = await Process.start(_getScrcpyPath(), args);
+      final proc = await Process.start(
+        _getScrcpyPath(),
+        args,
+        environment: _getEnv(),
+      );
       _processes[deviceId] = proc;
       onStatusChange?.call(deviceId, true);
 
