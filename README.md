@@ -1,55 +1,92 @@
-# Scrcpy GUI (Flutter)
+# Android Candy
 
-A modern, cross-platform graphical user interface for [scrcpy](https://github.com/Genymobile/scrcpy), enabling seamless Android control.
+**A modern, premium desktop client for Scrcpy.**
+*Control your Android device with style, speed, and simplicity.*
 
-### Dashboard
 ![Dashboard](scrcpy-gui-flutter/assets/dashboard.png)
-Centralized hub for managing devices, connections, and system status in real-time.
 
-### Screen Mirroring
-![Screen Mirror](scrcpy-gui-flutter/assets/screen_mirror.png)
-High-performance, low-latency screen mirroring with keyboard and mouse control.
+## ✨ Features
 
-### Camera Mirroring
-![Camera Mirror](scrcpy-gui-flutter/assets/camera_mirror.png)
-Professional-grade camera mirroring with granular control over FPS, rotation, and resolution.
+### 🖥️ Screen Mirroring
+High-performance, low-latency screen mirroring with full keyboard and mouse control. Supports high refresh rates (up to 120Hz+).
 
-### Virtual Webcam (macOS Native) - *Coming Soon*
-![Virtual Webcam](scrcpy-gui-flutter/assets/virtual_cam.png)
-Turn your phone into a system-wide native webcam without needing third-party drivers (currently in development).
+### 📸 Camera Mirroring
+Use your phone's camera as a high-quality monitor feed or webcam source. Granular control over resolution, FPS, and rotation.
 
+### 📂 File Manager (Enhanced)
+Drag-and-drop file management with a beautiful UI.
+- **Visuals:** Grid and List views with rich file icons.
+- **Sorting:** Sort by Name, Size, Type, or Date.
+- **Navigation:** Editable path bar with autocomplete for quick access.
 
-### File Explorer
-![File Explorer](scrcpy-gui-flutter/assets/file_explorer.png)
-Drag-and-drop file management for effortless transfer between your computer and Android device.
+### 📱 App Manager & Launcher
+- **Launch:** Start apps directly from the desktop client.
+- **Manage:** Install APKs, uninstall apps, and search your package list.
 
-### App Management
-![App Management](scrcpy-gui-flutter/assets/app_management.png)
-Install, uninstall, and manage Android applications with a single click.
+### ⚡ Fastboot Controls
+Advanced tools for power users.
+- **Reboot Modes:** Easily reboot to System, Bootloader, or Recovery.
+- **Safe Execution:** Commands are executed safely with visual feedback.
 
-### Desktop Mode
-![Desktop Mode](scrcpy-gui-flutter/assets/desktop_mode.png)
-Experience a full desktop-like environment for supported Samsung DeX and similar devices.
+### 🛠️ Advanced Options
+Fine-tune your experience with bitrate controls, codec selection (H.264, H.265, AV1), and screen recording settings.
 
-### Advanced Options
-![Advanced Options](scrcpy-gui-flutter/assets/advance_option.png)
-Fine-tune bitrate, codecs (H.264/H.265/AV1), and recording settings for power users.
+---
 
-## Getting Started
+## 🚀 Installation (macOS)
 
-1.  **Prerequisites**: Ensure `adb` and `scrcpy` are installed and in your system PATH (`brew install scrcpy android-platform-tools` on macOS).
-2.  **Installation**: Clone the repo, run `flutter pub get`, and launch with `flutter run -d macos`.
-
-
-
-### ⚠️ Important Note (macOS)
-This initial release is **unsigned**. You may not be able to open it by double-clicking.
-To launch the app, run this command in your terminal from the folder where you unzipped it:
-
+### Prerequisites
+You must have `scrcpy` and `adb` installed on your system.
 ```bash
-./scrcpy_gui.app/Contents/MacOS/scrcpy_gui
+brew install scrcpy android-platform-tools
 ```
 
-## Credits
+### Download
+1.  Download the latest `AndroidCandy.dmg` from the [Releases](https://github.com/imAdityaSharma/scrcpy-gui-flutter/releases) page.
+2.  Open the DMG and drag **Android Candy** to your **Applications** folder.
 
-This project is powered by [scrcpy](https://github.com/Genymobile/scrcpy), originally developed by [kil0bit-kb](https://github.com/kil0bit-kb/scrcpy-gui) for windows.
+### ⚠️ First Launch (Important)
+
+ macOS will likely block the app because it isn't notarized. You might see **"App is damaged"** or **"Unidentified Developer"**.
+
+**To bypass this:**
+1.  Open your **Applications** folder.
+2.  **Right-Click (Control+Click)** on **Android Candy**.
+3.  Select **Open** from the menu.
+4.  Click **Open** in the confirmation dialog.
+
+*If you still get a "Damaged" error, run this command in Terminal:*
+```bash
+sudo xattr -cr /Applications/"Android Candy.app"
+```
+
+---
+
+## 🛠️ Building from Source
+
+If you prefer to build it yourself:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/108slashpheonix/scrcpy-gui-flutter.git
+    cd scrcpy-gui-flutter/scrcpy-gui-flutter
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    flutter pub get
+    cd macos && pod install && cd ..
+    ```
+
+3.  **Build Release:**
+    ```bash
+    flutter build macos --release
+    ```
+
+---
+
+## 🤝 Credits
+
+- Core Engine: [scrcpy](https://github.com/Genymobile/scrcpy) (Genymobile)
+- UI Framework: [Flutter](https://flutter.dev)
+- Original Inspiration: [kil0bit-kb](https://github.com/kil0bit-kb/scrcpy-gui)
